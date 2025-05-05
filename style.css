@@ -1,0 +1,356 @@
+
+    /* Main background animation */
+    .bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+    }
+    
+    .bg2 {
+        filter: blur(10px);
+        opacity: 0.6;
+    }
+    
+    .bg3 {
+        filter: blur(20px);
+        opacity: 0.4;
+    }
+    
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    
+    /* Main content styling */
+    .content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Main title styling */
+    .main-title {
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    .gradient-text {
+        background: linear-gradient(90deg, #ff4d4d, #f9cb28);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-size: 2.5rem;
+    }
+    
+    .main-subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+    }
+    
+    /* Upload container */
+    .upload-container {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .upload-title {
+        color: #333;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+    }
+    
+    /* Report container */
+    .report-container {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        min-height: 80vh;
+    }
+    
+    .report-title {
+        color: #333;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+    }
+    
+    /* Score card styling */
+    .score-card {
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        color: white;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .score-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .score-emoji {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .score-value {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    
+    .score-message {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+    
+    /* Progress bar */
+    .progress-container {
+        width: 100%;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 5px;
+        margin-bottom: 2rem;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #4CAF50, #8BC34A);
+        border-radius: 5px;
+        transition: width 1s ease-in-out;
+    }
+    
+    /* Analysis cards */
+    .analysis-card {
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .analysis-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-header {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+    
+    .card-content {
+        color: #555;
+        line-height: 1.6;
+    }
+    
+    .card-match {
+        background: rgba(76, 175, 80, 0.1);
+        border-left: 4px solid #4CAF50;
+    }
+    
+    .card-missing {
+        background: rgba(244, 67, 54, 0.1);
+        border-left: 4px solid #F44336;
+    }
+    
+    .card-improve {
+        background: rgba(33, 150, 243, 0.1);
+        border-left: 4px solid #2196F3;
+    }
+    
+    .card-default {
+        background: rgba(255, 193, 7, 0.1);
+        border-left: 4px solid #FFC107;
+    }
+    
+    /* Company card */
+    .company-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-top: 1rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .company-header {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .company-header h3 {
+        margin: 0;
+        color: #333;
+    }
+    
+    .company-header a {
+        color: #2196F3;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+    
+    .company-section {
+        margin-bottom: 1rem;
+    }
+    
+    .company-section h4 {
+        margin: 0 0 0.5rem 0;
+        color: #555;
+        font-size: 1rem;
+    }
+    
+    .company-section p {
+        margin: 0;
+        color: #666;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    
+    /* Welcome card */
+    .welcome-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .welcome-card h3 {
+        color: #333;
+        margin-top: 0;
+    }
+    
+    .welcome-card ol {
+        text-align: left;
+        padding-left: 1.5rem;
+        color: #555;
+    }
+    
+    .tip-box {
+        background: rgba(255, 235, 59, 0.2);
+        border-left: 4px solid #FFC107;
+        padding: 1rem;
+        margin: 1.5rem 0;
+        border-radius: 0 8px 8px 0;
+        text-align: left;
+        color: #5d4037;
+    }
+    
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+    
+    .feature {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .feature:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .feature-text {
+        font-size: 0.9rem;
+        color: #555;
+    }
+    
+    /* Download button */
+    .download-container {
+        margin: 2rem 0;
+        text-align: center;
+    }
+    
+    .download-btn {
+        display: inline-block;
+        background: linear-gradient(90deg, #2196F3, #21CBF3);
+        color: white;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .download-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+    }
+    
+    /* Share container */
+    .share-container {
+        display: flex;
+        margin-bottom: 2rem;
+    }
+    
+    .share-container input {
+        flex: 1;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 50px 0 0 50px;
+        outline: none;
+    }
+    
+    .share-btn {
+        background: linear-gradient(90deg, #4CAF50, #8BC34A);
+        color: white;
+        border: none;
+        padding: 0 1.5rem;
+        border-radius: 0 50px 50px 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .share-btn:hover {
+        background: linear-gradient(90deg, #3e8e41, #7cb342);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .gradient-text {
+            font-size: 2rem;
+        }
+        
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
