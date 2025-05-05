@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 from urllib.parse import urlparse
 import random
 
-# Set page config FIRST - must be before any other Streamlit commands
+# Set page config with dark theme
 st.set_page_config(
     page_title="AI Resume Customizer", 
     layout="wide",
@@ -21,21 +21,35 @@ st.set_page_config(
 # Load environment variables
 load_dotenv()
 
-# Custom CSS for styling
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+# Dark theme CSS with appropriate text colors
+st.markdown("""
+<style>
+    /* Dark theme color scheme */
+    :root {
+        --primary-color: #6C63FF;
+        --secondary-color: #8E85FF;
+        --accent-color: #4A42D1;
+        --background-color: #121212;
+        --card-bg: #1E1E1E;
+        --text-color: #E0E0E0;
+        --text-muted: #A0A0A0;
+        --border-color: #333333;
+    }
 
-# Create style.css file with improved styling
-if not os.path.exists("style.css"):
-    css_content = """
-    /* Main styling */
-    .main-header {
-        padding: 2rem;
-        border-radius: 0.5rem;
-        margin-bottom: 1.5rem;
+    /* Main container styling */
+    .stApp {
+        background-color: var(--background-color);
+        color: var(--text-color);
+    }
+
+    /* Header styling */
+    .header {
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        padding: 3rem 2rem;
+        border-radius: 1rem;
         color: white;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     }
     
     .main-header h1 {
@@ -96,31 +110,31 @@ if not os.path.exists("style.css"):
         border-top: 1px solid #eee;
         font-size: 0.9rem;
     }
-    
-    /* Company card */
-    .company-card {
-        background: white;
-        border-radius: 0.5rem;
+
+    /* Card styling */
+    .card {
+        background: var(--card-bg);
+        border-radius: 1rem;
         padding: 1.5rem;
         margin: 1rem 0;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+        transition: transform 0.2s ease;
     }
-    
-    .company-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
-    
-    .company-header h3 {
-        margin: 0;
+
+    /* Text elements */
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--text-color) !important;
     }
-    
-    .company-link {
-        color: #667eea;
-        text-decoration: none;
-        font-weight: 500;
+
+    p, div {
+        color: var(--text-color) !important;
     }
     
     .company-section {
@@ -162,94 +176,63 @@ if not os.path.exists("style.css"):
     .score-emoji {
         font-size: 1.5rem;
     }
-    
-    .score-icon {
-        font-size: 1.5rem;
+
+    .stButton>button:hover {
+        background: var(--secondary-color);
+        transform: translateY(-1px);
+        color: white !important;
     }
-    
-    .score-message {
-        margin: 0 0 1rem 0;
-        font-size: 1.1rem;
-    }
-    
-    .progress-container {
-        width: 100%;
-        background: #f0f0f0;
-        border-radius: 20px;
-        height: 30px;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .progress-bar {
-        height: 100%;
-        border-radius: 20px;
-        transition: width 0.5s ease;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        padding-right: 10px;
-    }
-    
-    .progress-text {
-        color: white;
-        font-weight: bold;
-        font-size: 0.9rem;
-        text-shadow: 0 1px 1px rgba(0,0,0,0.3);
-    }
-    
-    /* Analysis cards */
-    .analysis-card {
-        background: white;
+
+    /* File uploader styling */
+    .stFileUploader {
+        border: 2px dashed var(--accent-color);
         border-radius: 0.5rem;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 1rem;
+        background: var(--card-bg) !important;
     }
-    
-    .card-header {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
+
+    /* Progress bar styling */
+    .progress-bar {
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        border-radius: 1rem;
+        height: 0.5rem;
     }
-    
-    .card-title {
-        margin: 0;
-        color: #333;
+
+    /* Sidebar styling */
+    .css-1d391kg {
+        background-color: var(--card-bg) !important;
+        border-right: 1px solid var(--border-color) !important;
     }
-    
-    .card-icon {
-        font-size: 1.5rem;
+
+    .sidebar-header {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
     }
-    
-    .card-content {
-        line-height: 1.6;
+
+    /* Input fields */
+    .stTextInput>div>div>input, 
+    .stTextArea>div>div>textarea {
+        background: var(--card-bg) !important;
+        color: var(--text-color) !important;
+        border: 1px solid var(--border-color) !important;
     }
-    
-    /* Specific card types */
-    .recommendation-card {
-        border-left: 4px solid #667eea;
+
+    /* Radio buttons */
+    .stRadio>div {
+        background: var(--card-bg) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
     }
-    
-    .missing-card {
-        border-left: 4px solid #f59e0b;
+
+    /* Select slider */
+    .stSelectSlider>div {
+        background: var(--card-bg) !important;
     }
-    
-    .overused-card {
-        border-left: 4px solid #ef4444;
-    }
-    
-    .gap-card {
-        border-left: 4px solid #10b981;
-    }
-    
-    .improvement-card {
-        border-left: 4px solid #8b5cf6;
-    }
-    
-    .action-card {
-        border-left: 4px solid #ec4899;
+
+    /* Checkbox */
+    .stCheckbox>label {
+        color: var(--text-color) !important;
     }
     
     /* Section headers */
@@ -280,21 +263,8 @@ if not os.path.exists("style.css"):
             gap: 0.5rem;
         }
     }
-    """
-    with open("style.css", "w") as f:
-        f.write(css_content)
-
-# Load custom CSS
-local_css("style.css")
-
-# Cool gradient backgrounds
-GRADIENTS = [
-    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-    "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
-    "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-    "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-    "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
-]
+</style>
+""", unsafe_allow_html=True)
 
 def clean_html(raw_html):
     """Remove HTML tags from a string"""
@@ -345,15 +315,17 @@ def get_company_info(url):
 
 # Initialize Groq client
 try:
-    client = Groq(api_key=os.environ.get("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"))
+    api_key = os.environ.get("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")
+    if not api_key:
+        st.warning("Please set your GROQ_API_KEY in the .env file or enter it below")
+        api_key = st.text_input("Enter your Groq API key:", type="password")
+        if not api_key:
+            st.stop()
+    
+    client = Groq(api_key=api_key)
 except Exception as e:
     st.error(f"Failed to initialize Groq client: {str(e)}")
-    st.info("Please set your GROQ_API_KEY in the .env file or enter it below")
-    api_key = st.text_input("Enter your Groq API key:", type="password")
-    if api_key:
-        client = Groq(api_key=api_key)
-    else:
-        st.stop()
+    st.stop()
 
 def extract_text_from_pdf(uploaded_file):
     """Extract text from uploaded PDF file."""
@@ -430,43 +402,44 @@ def create_placement_indicator(score):
     st.subheader("Resume Match Score")
     
     if score >= 80:
-        color = "#10b981"  # Green
+        color = "#10B981"  # Green
         emoji = "🎯"
         message = "Excellent match! High probability of getting placed"
         icon = "✨"
     elif score >= 60:
-        color = "#84cc16"  # Light Green
+        color = "#84CC16"  # Light Green
         emoji = "👍"
         message = "Good match - some optimizations could make it perfect"
         icon = "🔍"
     elif score >= 40:
-        color = "#f59e0b"  # Amber
+        color = "#F59E0B"  # Amber
         emoji = "⚠️"
         message = "Moderate match - needs improvements"
         icon = "📝"
     elif score >= 20:
-        color = "#f97316"  # Orange
+        color = "#F97316"  # Orange
         emoji = "🤔"
         message = "Below average - significant improvements needed"
         icon = "🛠️"
     else:
-        color = "#ef4444"  # Red
+        color = "#EF4444"  # Red
         emoji = "❌"
         message = "Poor match - major overhaul required"
         icon = "🚨"
     
     st.markdown(
         f"""
-        <div class="score-card">
-            <div class="score-header">
-                <span class="score-emoji">{emoji}</span>
-                <h2 class="score-title">Match Score: {score}%</h2>
-                <span class="score-icon">{icon}</span>
+        <div class="card">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <span style="font-size: 24px;">{emoji}</span>
+                <h2 style="margin: 0;">Match Score: {score}%</h2>
+                <span style="font-size: 24px;">{icon}</span>
             </div>
-            <p class="score-message">{message}</p>
-            <div class="progress-container">
-                <div class="progress-bar" style="width: {score}%; background: {color};">
-                    <span class="progress-text">{score}%</span>
+            <p style="margin-bottom: 15px;">{message}</p>
+            <div style="width: 100%; background: #333; border-radius: 10px;">
+                <div style="width: {score}%; background: {color}; height: 10px; border-radius: 10px; 
+                    display: flex; align-items: center; justify-content: flex-end; padding-right: 5px;">
+                    <span style="color: white; font-size: 10px;">{score}%</span>
                 </div>
             </div>
         </div>
@@ -498,35 +471,35 @@ def format_analysis_content(analysis_text):
             
         # Different card styles for different sections
         if "Recommendations" in title:
-            card_class = "recommendation-card"
             icon = "💡"
+            border_color = "#6C63FF"
         elif "Missing" in title:
-            card_class = "missing-card"
             icon = "🔎"
+            border_color = "#4CAF50"
         elif "Overused" in title:
-            card_class = "overused-card"
             icon = "🔄"
+            border_color = "#FF9800"
         elif "Gap" in title:
-            card_class = "gap-card"
             icon = "📉"
+            border_color = "#2196F3"
         elif "Improvements" in title:
-            card_class = "improvement-card"
             icon = "🛠️"
+            border_color = "#9C27B0"
         elif "Action" in title:
-            card_class = "action-card"
             icon = "✅"
+            border_color = "#00BCD4"
         else:
-            card_class = "analysis-card"
             icon = "📌"
+            border_color = "#607D8B"
         
         st.markdown(
             f"""
-            <div class="{card_class}">
-                <div class="card-header">
-                    <span class="card-icon">{icon}</span>
-                    <h3 class="card-title">{title}</h3>
+            <div class="card" style="border-left: 4px solid {border_color};">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <span style="font-size: 24px;">{icon}</span>
+                    <h3 style="margin: 0;">{title}</h3>
                 </div>
-                <div class="card-content">
+                <div style="color: var(--text-color);">
                     {content.replace('\n', '<br>')}
                 </div>
             </div>
@@ -658,17 +631,66 @@ def main():
         </div>
         """, unsafe_allow_html=True)
         
-        create_placement_indicator(st.session_state.match_score)
-        format_analysis_content(st.session_state.analysis)
-        
-        # Add download button with icon
-        st.download_button(
-            label="📥 Download Full Analysis Report",
-            data=st.session_state.analysis,
-            file_name="resume_optimization_report.txt",
-            mime="text/plain",
-            use_container_width=True
+        analysis_depth = st.select_slider(
+            "Analysis Depth",
+            options=["Basic", "Standard", "Detailed"],
+            value="Standard"
         )
+        
+        include_keywords = st.checkbox("Include keyword analysis", value=True)
+        include_skills = st.checkbox("Include skills gap analysis", value=True)
+        include_formatting = st.checkbox("Include formatting suggestions", value=True)
+
+        # Company website input
+        st.markdown("""
+        <div class="card fade-in">
+            <h2>🏢 Company Info (Optional)</h2>
+        </div>
+        """, unsafe_allow_html=True)
+        company_url = st.text_input("Company website URL (for better customization)")
+
+    # Analysis button
+    if st.button("🚀 Analyze Resume", use_container_width=True):
+        if not resume_file:
+            st.error("Please upload your resume first")
+            return
+            
+        if jd_option == "Upload PDF" and not jd_file:
+            st.error("Please upload or paste the job description")
+            return
+        elif jd_option == "Paste Text" and not jd_text:
+            st.error("Please paste the job description")
+            return
+            
+        with st.spinner("Analyzing your resume..."):
+            # Extract text from files
+            resume_text = extract_text_from_pdf(resume_file)
+            if not resume_text:
+                return
+                
+            if jd_option == "Upload PDF":
+                jd_text = extract_text_from_pdf(jd_file)
+                if not jd_text:
+                    return
+            
+            # Get company info if URL provided
+            company_info = None
+            if company_url:
+                company_info = get_company_info(company_url)
+            
+            # Perform analysis
+            analysis_text = analyze_resume_with_groq(jd_text, resume_text, company_info)
+            
+            # Display results
+            st.success("Analysis complete!")
+            
+            with st.expander("View Analysis Results", expanded=True):
+                # Extract and display match score
+                match_score = extract_match_score(analysis_text)
+                create_placement_indicator(match_score)
+                
+                # Display the rest of the analysis
+                format_analysis_content(analysis_text)
 
 if __name__ == "__main__":
     main()
