@@ -10,132 +10,282 @@ from dotenv import load_dotenv
 from urllib.parse import urlparse
 import random
 
-# Set page config with a more modern theme
+# Set page config FIRST - must be before any other Streamlit commands
 st.set_page_config(
-    page_title="AI Resume Customizer",
+    page_title="AI Resume Customizer", 
     layout="wide",
-    page_icon="🎯",
+    page_icon="✨",
     initial_sidebar_state="expanded"
 )
 
 # Load environment variables
 load_dotenv()
 
-# Custom CSS for modern styling
-st.markdown("""
-<style>
-    /* Modern color scheme */
-    :root {
-        --primary-color: #4F46E5;
-        --secondary-color: #818CF8;
-        --accent-color: #C7D2FE;
-        --background-color: #F8FAFC;
-        --text-color: #1E293B;
-    }
+# Custom CSS for styling
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-    /* Main container styling */
-    .main {
-        background-color: var(--background-color);
+# Create style.css file with improved styling
+if not os.path.exists("style.css"):
+    css_content = """
+    /* Main styling */
+    .main-header {
         padding: 2rem;
-    }
-
-    /* Header styling */
-    .header {
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        padding: 3rem 2rem;
-        border-radius: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1.5rem;
         color: white;
-        margin-bottom: 2rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-
-    .header h1 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        font-weight: 700;
+    
+    .main-header h1 {
+        color: white;
+        margin-bottom: 0.5rem;
     }
-
-    .header p {
-        font-size: 1.2rem;
+    
+    .header-sub {
         opacity: 0.9;
+        font-size: 1.1rem;
     }
-
-    /* Card styling */
-    .card {
+    
+    /* Sidebar styling */
+    .sidebar-header {
+        padding: 1rem 0;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 1rem;
+    }
+    
+    .sidebar-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .step {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .step-number {
+        background: #667eea;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+    }
+    
+    .step-content h4 {
+        margin-bottom: 0.3rem;
+    }
+    
+    .step-content p {
+        font-size: 0.9rem;
+        color: #666;
+        margin: 0;
+    }
+    
+    .sidebar-footer {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
+        font-size: 0.9rem;
+    }
+    
+    /* Company card */
+    .company-card {
         background: white;
-        border-radius: 1rem;
+        border-radius: 0.5rem;
         padding: 1.5rem;
         margin: 1rem 0;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        transition: transform 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-
-    .card:hover {
-        transform: translateY(-2px);
+    
+    .company-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
     }
-
-    /* Button styling */
-    .stButton>button {
-        background: var(--primary-color);
-        color: white;
+    
+    .company-header h3 {
+        margin: 0;
+    }
+    
+    .company-link {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .company-section {
+        margin-bottom: 1rem;
+    }
+    
+    .company-section h4 {
+        margin-bottom: 0.5rem;
+        color: #444;
+    }
+    
+    .company-section p {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    
+    /* Score card */
+    .score-card {
+        background: white;
         border-radius: 0.5rem;
-        padding: 0.5rem 1rem;
-        border: none;
-        font-weight: 600;
-        transition: all 0.2s ease;
+        padding: 1.5rem;
+        margin: 1rem 0 2rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-
-    .stButton>button:hover {
-        background: var(--secondary-color);
-        transform: translateY(-1px);
+    
+    .score-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
     }
-
-    /* File uploader styling */
-    .stFileUploader {
-        border: 2px dashed var(--accent-color);
-        border-radius: 0.5rem;
-        padding: 1rem;
+    
+    .score-title {
+        margin: 0;
+        flex-grow: 1;
     }
-
-    /* Progress bar styling */
+    
+    .score-emoji {
+        font-size: 1.5rem;
+    }
+    
+    .score-icon {
+        font-size: 1.5rem;
+    }
+    
+    .score-message {
+        margin: 0 0 1rem 0;
+        font-size: 1.1rem;
+    }
+    
+    .progress-container {
+        width: 100%;
+        background: #f0f0f0;
+        border-radius: 20px;
+        height: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+    
     .progress-bar {
-        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-        border-radius: 1rem;
-        height: 0.5rem;
+        height: 100%;
+        border-radius: 20px;
+        transition: width 0.5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 10px;
     }
-
-    /* Sidebar styling */
-    .css-1d391kg {
-        background-color: white;
+    
+    .progress-text {
+        color: white;
+        font-weight: bold;
+        font-size: 0.9rem;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.3);
     }
-
-    .sidebar-header {
-        padding: 1rem;
-        border-bottom: 1px solid var(--accent-color);
+    
+    /* Analysis cards */
+    .analysis-card {
+        background: white;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-
-    /* Animation classes */
-    .fade-in {
-        animation: fadeIn 0.5s ease-in;
+    
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
     }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+    
+    .card-title {
+        margin: 0;
+        color: #333;
     }
-
-    /* Responsive design */
+    
+    .card-icon {
+        font-size: 1.5rem;
+    }
+    
+    .card-content {
+        line-height: 1.6;
+    }
+    
+    /* Specific card types */
+    .recommendation-card {
+        border-left: 4px solid #667eea;
+    }
+    
+    .missing-card {
+        border-left: 4px solid #f59e0b;
+    }
+    
+    .overused-card {
+        border-left: 4px solid #ef4444;
+    }
+    
+    .gap-card {
+        border-left: 4px solid #10b981;
+    }
+    
+    .improvement-card {
+        border-left: 4px solid #8b5cf6;
+    }
+    
+    .action-card {
+        border-left: 4px solid #ec4899;
+    }
+    
+    /* Section headers */
+    .section-header {
+        margin: 2rem 0 1rem;
+    }
+    
+    .section-header h2 {
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 0.5rem;
+    }
+    
+    /* File upload containers */
+    .stContainer {
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+    }
+    
+    /* Responsive adjustments */
     @media (max-width: 768px) {
-        .header {
-            padding: 2rem 1rem;
+        .main-header {
+            padding: 1.5rem;
         }
         
-        .header h1 {
-            font-size: 2rem;
+        .score-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
         }
     }
-</style>
-""", unsafe_allow_html=True)
+    """
+    with open("style.css", "w") as f:
+        f.write(css_content)
+
+# Load custom CSS
+local_css("style.css")
 
 # Cool gradient backgrounds
 GRADIENTS = [
@@ -385,115 +535,140 @@ def format_analysis_content(analysis_text):
         )
 
 def main():
-    # Header section
-    st.markdown("""
-    <div class="header fade-in">
-        <h1>🎯 AI Resume Optimizer</h1>
-        <p>Optimize your resume for your dream job with AI-powered insights</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # Sidebar
+    # Apply random gradient to header
+    selected_gradient = random.choice(GRADIENTS)
+    
+    st.markdown(
+        f"""
+        <div class="main-header" style="background: {selected_gradient};">
+            <h1>✨ AI-Powered Resume Customizer</h1>
+            <p class="header-sub">Get company insights and optimize your resume for specific job postings</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+    
+    # Sidebar with info
     with st.sidebar:
         st.markdown("""
         <div class="sidebar-header">
             <h2>How It Works</h2>
         </div>
-        """, unsafe_allow_html=True)
-        
-        steps = [
-            ("1", "Upload Resume", "Upload your current resume in PDF format"),
-            ("2", "Add Job Description", "Paste or upload the job description you're targeting"),
-            ("3", "Get Insights", "Receive AI-powered optimization suggestions")
-        ]
-        
-        for num, title, desc in steps:
-            st.markdown(f"""
-            <div class="card fade-in">
-                <h3>Step {num}: {title}</h3>
-                <p>{desc}</p>
+        <div class="sidebar-content">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Add Company Info</h4>
+                    <p>Enter the company URL for tailored recommendations</p>
+                </div>
             </div>
-            """, unsafe_allow_html=True)
-
-    # Main content area
-    col1, col2 = st.columns([2, 1])
-
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Upload Documents</h4>
+                    <p>Provide the job description and your resume</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Get Analysis</h4>
+                    <p>Receive personalized optimization suggestions</p>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-footer">
+            <p><strong>Tip:</strong> Company info helps us give more targeted advice</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Company Information Section
+    with st.expander("🔍 Step 1: Add Company Information (Optional but Recommended)", expanded=True):
+        company_url = st.text_input("Enter company website URL:", key="company_url", placeholder="https://www.company.com")
+        company_info = None
+        
+        if company_url:
+            with st.spinner("Gathering company information..."):
+                company_info = get_company_info(company_url)
+                if company_info:
+                    st.success(f"Successfully retrieved information for {company_info['name']}")
+                    
+                    # Display company info in a nice card
+                    st.markdown(
+                        f"""
+                        <div class="company-card">
+                            <div class="company-header">
+                                <h3>{company_info['name']}</h3>
+                                <a href="{company_info['website']}" target="_blank" class="company-link">Visit Website</a>
+                            </div>
+                            <div class="company-section">
+                                <h4>Description</h4>
+                                <p>{company_info['description']}</p>
+                            </div>
+                            <div class="company-section">
+                                <h4>About</h4>
+                                <p>{company_info['about']}</p>
+                            </div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+    
+    # Main analysis section
+    st.markdown("""
+    <div class="section-header">
+        <h2>📄 Step 2: Upload Documents</h2>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    
     with col1:
-        # Resume upload section
-        st.markdown("""
-        <div class="card fade-in">
-            <h2>📄 Upload Your Resume</h2>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        resume_file = st.file_uploader("Choose your resume (PDF)", type="pdf", key="resume")
-
-        # Job description section
-        st.markdown("""
-        <div class="card fade-in">
-            <h2>🎯 Job Description</h2>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        jd_option = st.radio("Choose input method:", ["Upload PDF", "Paste Text"])
-        
-        if jd_option == "Upload PDF":
-            jd_file = st.file_uploader("Upload job description (PDF)", type="pdf", key="jd")
-        else:
-            jd_text = st.text_area("Paste job description here", height=200)
-
+        with st.container(border=True):
+            st.markdown("<h3 style='text-align: center;'>Job Description</h3>", unsafe_allow_html=True)
+            jd_file = st.file_uploader("Upload PDF", type="pdf", key="jd_uploader", label_visibility="collapsed")
+    
     with col2:
-        # Additional options
+        with st.container(border=True):
+            st.markdown("<h3 style='text-align: center;'>Your Resume</h3>", unsafe_allow_html=True)
+            resume_file = st.file_uploader("Upload PDF", type="pdf", key="resume_uploader", label_visibility="collapsed")
+    
+    analyze_button = st.button("🚀 Analyze Documents", use_container_width=True, type="primary")
+    
+    if analyze_button:
+        if jd_file and resume_file:
+            with st.spinner("Analyzing your documents... This may take a moment"):
+                jd_text = extract_text_from_pdf(jd_file)
+                resume_text = extract_text_from_pdf(resume_file)
+                
+                if jd_text and resume_text:
+                    analysis = analyze_resume_with_groq(jd_text, resume_text, company_info)
+                    st.session_state.analysis = analysis
+                    st.session_state.match_score = extract_match_score(analysis)
+                    st.rerun()
+                else:
+                    st.error("Failed to process one or both documents")
+        else:
+            st.warning("Please upload both files to proceed")
+    
+    if "analysis" in st.session_state:
         st.markdown("""
-        <div class="card fade-in">
-            <h2>⚙️ Options</h2>
+        <div class="section-header">
+            <h2>📊 Optimization Report</h2>
         </div>
         """, unsafe_allow_html=True)
         
-        analysis_depth = st.select_slider(
-            "Analysis Depth",
-            options=["Basic", "Standard", "Detailed"],
-            value="Standard"
-        )
+        create_placement_indicator(st.session_state.match_score)
+        format_analysis_content(st.session_state.analysis)
         
-        include_keywords = st.checkbox("Include keyword analysis", value=True)
-        include_skills = st.checkbox("Include skills gap analysis", value=True)
-        include_formatting = st.checkbox("Include formatting suggestions", value=True)
-
-    # Analysis button
-    if st.button("🚀 Analyze Resume", use_container_width=True):
-        with st.spinner("Analyzing your resume..."):
-            # Placeholder for analysis logic
-            st.success("Analysis complete!")
-            
-            # Display results in an expandable section
-            with st.expander("View Analysis Results", expanded=True):
-                st.markdown("""
-                <div class="card fade-in">
-                    <h2>📊 Analysis Results</h2>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                # Match score
-                st.markdown("""
-                <div class="card fade-in">
-                    <h3>Match Score</h3>
-                    <div class="progress-bar" style="width: 75%;"></div>
-                    <p>75% match with job requirements</p>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                # Recommendations
-                st.markdown("""
-                <div class="card fade-in">
-                    <h3>Key Recommendations</h3>
-                    <ul>
-                        <li>Add more quantifiable achievements</li>
-                        <li>Highlight relevant technical skills</li>
-                        <li>Optimize for ATS compatibility</li>
-                    </ul>
-                </div>
-                """, unsafe_allow_html=True)
+        # Add download button with icon
+        st.download_button(
+            label="📥 Download Full Analysis Report",
+            data=st.session_state.analysis,
+            file_name="resume_optimization_report.txt",
+            mime="text/plain",
+            use_container_width=True
+        )
 
 if __name__ == "__main__":
     main()
