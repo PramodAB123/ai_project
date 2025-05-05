@@ -40,6 +40,19 @@ st.markdown("""
     .stApp {
         background-color: var(--background-color);
         color: var(--text-color);
+<<<<<<< HEAD
+=======
+    }
+
+    /* Header styling */
+    .header {
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        padding: 3rem 2rem;
+        border-radius: 1rem;
+        color: white;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+>>>>>>> 991489f1c2ad9699376335c6dc034b7a5e8386a9
     }
 
     /* Header styling */
@@ -62,6 +75,58 @@ st.markdown("""
         font-size: 1.2rem;
         opacity: 0.9;
     }
+<<<<<<< HEAD
+=======
+    
+    /* Sidebar styling */
+    .sidebar-header {
+        padding: 1rem 0;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 1rem;
+    }
+    
+    .sidebar-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .step {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .step-number {
+        background: #667eea;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+    }
+    
+    .step-content h4 {
+        margin-bottom: 0.3rem;
+    }
+    
+    .step-content p {
+        font-size: 0.9rem;
+        color: #666;
+        margin: 0;
+    }
+    
+    .sidebar-footer {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
+        font-size: 0.9rem;
+    }
+>>>>>>> 991489f1c2ad9699376335c6dc034b7a5e8386a9
 
     /* Card styling */
     .card {
@@ -98,6 +163,82 @@ st.markdown("""
         border: none;
         font-weight: 600;
         transition: all 0.2s ease;
+    }
+
+    .stButton>button:hover {
+        background: var(--secondary-color);
+        transform: translateY(-1px);
+        color: white !important;
+    }
+
+    /* File uploader styling */
+    .stFileUploader {
+        border: 2px dashed var(--accent-color);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        background: var(--card-bg) !important;
+    }
+<<<<<<< HEAD
+
+    /* Progress bar styling */
+    .progress-bar {
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        border-radius: 1rem;
+        height: 0.5rem;
+    }
+
+    /* Sidebar styling */
+    .css-1d391kg {
+        background-color: var(--card-bg) !important;
+        border-right: 1px solid var(--border-color) !important;
+    }
+
+    .sidebar-header {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    /* Input fields */
+    .stTextInput>div>div>input, 
+    .stTextArea>div>div>textarea {
+        background: var(--card-bg) !important;
+        color: var(--text-color) !important;
+        border: 1px solid var(--border-color) !important;
+    }
+
+    /* Radio buttons */
+    .stRadio>div {
+        background: var(--card-bg) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+    }
+
+    /* Select slider */
+    .stSelectSlider>div {
+        background: var(--card-bg) !important;
+    }
+
+    /* Checkbox */
+    .stCheckbox>label {
+        color: var(--text-color) !important;
+    }
+
+    /* Animation classes */
+    .fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive design */
+=======
+    
+    .score-emoji {
+        font-size: 1.5rem;
     }
 
     .stButton>button:hover {
@@ -157,18 +298,25 @@ st.markdown("""
     .stCheckbox>label {
         color: var(--text-color) !important;
     }
-
-    /* Animation classes */
-    .fade-in {
-        animation: fadeIn 0.5s ease-in;
+    
+    /* Section headers */
+    .section-header {
+        margin: 2rem 0 1rem;
     }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+    
+    .section-header h2 {
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 0.5rem;
     }
-
-    /* Responsive design */
+    
+    /* File upload containers */
+    .stContainer {
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+    }
+    
+    /* Responsive adjustments */
+>>>>>>> 991489f1c2ad9699376335c6dc034b7a5e8386a9
     @media (max-width: 768px) {
         .header {
             padding: 2rem 1rem;
@@ -230,7 +378,11 @@ def get_company_info(url):
 
 # Initialize Groq client
 try:
+<<<<<<< HEAD
     api_key = os.environ.get("GROQ_API_KEY")
+=======
+    api_key = os.environ.get("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")
+>>>>>>> 991489f1c2ad9699376335c6dc034b7a5e8386a9
     if not api_key:
         st.warning("Please set your GROQ_API_KEY in the .env file or enter it below")
         api_key = st.text_input("Enter your Groq API key:", type="password")
@@ -464,6 +616,7 @@ def main():
         </div>
         """, unsafe_allow_html=True)
         
+<<<<<<< HEAD
         resume_file = st.file_uploader("Choose your resume (PDF)", type="pdf", key="resume")
 
         # Job description section
@@ -488,6 +641,8 @@ def main():
         </div>
         """, unsafe_allow_html=True)
         
+=======
+>>>>>>> 991489f1c2ad9699376335c6dc034b7a5e8386a9
         analysis_depth = st.select_slider(
             "Analysis Depth",
             options=["Basic", "Standard", "Detailed"],
