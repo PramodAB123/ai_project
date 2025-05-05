@@ -26,10 +26,260 @@ def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-# Create style.css file if it doesn't exist
+# Create style.css file with improved styling
 if not os.path.exists("style.css"):
     css_content = """
-    /* Your existing CSS content here */
+    /* Main styling */
+    .main-header {
+        padding: 2rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1.5rem;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .main-header h1 {
+        color: white;
+        margin-bottom: 0.5rem;
+    }
+    
+    .header-sub {
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+    
+    /* Sidebar styling */
+    .sidebar-header {
+        padding: 1rem 0;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 1rem;
+    }
+    
+    .sidebar-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .step {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .step-number {
+        background: #667eea;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+    }
+    
+    .step-content h4 {
+        margin-bottom: 0.3rem;
+    }
+    
+    .step-content p {
+        font-size: 0.9rem;
+        color: #666;
+        margin: 0;
+    }
+    
+    .sidebar-footer {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
+        font-size: 0.9rem;
+    }
+    
+    /* Company card */
+    .company-card {
+        background: white;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .company-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .company-header h3 {
+        margin: 0;
+    }
+    
+    .company-link {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .company-section {
+        margin-bottom: 1rem;
+    }
+    
+    .company-section h4 {
+        margin-bottom: 0.5rem;
+        color: #444;
+    }
+    
+    .company-section p {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    
+    /* Score card */
+    .score-card {
+        background: white;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        margin: 1rem 0 2rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .score-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .score-title {
+        margin: 0;
+        flex-grow: 1;
+    }
+    
+    .score-emoji {
+        font-size: 1.5rem;
+    }
+    
+    .score-icon {
+        font-size: 1.5rem;
+    }
+    
+    .score-message {
+        margin: 0 0 1rem 0;
+        font-size: 1.1rem;
+    }
+    
+    .progress-container {
+        width: 100%;
+        background: #f0f0f0;
+        border-radius: 20px;
+        height: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        height: 100%;
+        border-radius: 20px;
+        transition: width 0.5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 10px;
+    }
+    
+    .progress-text {
+        color: white;
+        font-weight: bold;
+        font-size: 0.9rem;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    }
+    
+    /* Analysis cards */
+    .analysis-card {
+        background: white;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .card-title {
+        margin: 0;
+        color: #333;
+    }
+    
+    .card-icon {
+        font-size: 1.5rem;
+    }
+    
+    .card-content {
+        line-height: 1.6;
+    }
+    
+    /* Specific card types */
+    .recommendation-card {
+        border-left: 4px solid #667eea;
+    }
+    
+    .missing-card {
+        border-left: 4px solid #f59e0b;
+    }
+    
+    .overused-card {
+        border-left: 4px solid #ef4444;
+    }
+    
+    .gap-card {
+        border-left: 4px solid #10b981;
+    }
+    
+    .improvement-card {
+        border-left: 4px solid #8b5cf6;
+    }
+    
+    .action-card {
+        border-left: 4px solid #ec4899;
+    }
+    
+    /* Section headers */
+    .section-header {
+        margin: 2rem 0 1rem;
+    }
+    
+    .section-header h2 {
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 0.5rem;
+    }
+    
+    /* File upload containers */
+    .stContainer {
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .main-header {
+            padding: 1.5rem;
+        }
+        
+        .score-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+    }
     """
     with open("style.css", "w") as f:
         f.write(css_content)
@@ -40,10 +290,10 @@ local_css("style.css")
 # Cool gradient backgrounds
 GRADIENTS = [
     "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-    "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
     "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
+    "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
     "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-    "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
+    "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
 ]
 
 def clean_html(raw_html):
@@ -180,34 +430,34 @@ def create_placement_indicator(score):
     st.subheader("Resume Match Score")
     
     if score >= 80:
-        color = "#4CAF50"  # Green
+        color = "#10b981"  # Green
         emoji = "🎯"
         message = "Excellent match! High probability of getting placed"
         icon = "✨"
     elif score >= 60:
-        color = "#8BC34A"  # Light Green
+        color = "#84cc16"  # Light Green
         emoji = "👍"
         message = "Good match - some optimizations could make it perfect"
         icon = "🔍"
     elif score >= 40:
-        color = "#FFC107"  # Amber
+        color = "#f59e0b"  # Amber
         emoji = "⚠️"
         message = "Moderate match - needs improvements"
         icon = "📝"
     elif score >= 20:
-        color = "#FF9800"  # Orange
+        color = "#f97316"  # Orange
         emoji = "🤔"
         message = "Below average - significant improvements needed"
         icon = "🛠️"
     else:
-        color = "#F44336"  # Red
+        color = "#ef4444"  # Red
         emoji = "❌"
         message = "Poor match - major overhaul required"
         icon = "🚨"
     
     st.markdown(
         f"""
-        <div class="score-card" style="border-left: 6px solid {color};">
+        <div class="score-card">
             <div class="score-header">
                 <span class="score-emoji">{emoji}</span>
                 <h2 class="score-title">Match Score: {score}%</h2>
@@ -266,12 +516,12 @@ def format_analysis_content(analysis_text):
             card_class = "action-card"
             icon = "✅"
         else:
-            card_class = "default-card"
+            card_class = "analysis-card"
             icon = "📌"
         
         st.markdown(
             f"""
-            <div class="analysis-card {card_class}">
+            <div class="{card_class}">
                 <div class="card-header">
                     <span class="card-icon">{icon}</span>
                     <h3 class="card-title">{title}</h3>
@@ -376,12 +626,12 @@ def main():
     with col1:
         with st.container(border=True):
             st.markdown("<h3 style='text-align: center;'>Job Description</h3>", unsafe_allow_html=True)
-            jd_file = st.file_uploader("", type="pdf", key="jd_uploader", label_visibility="collapsed")
+            jd_file = st.file_uploader("Upload PDF", type="pdf", key="jd_uploader", label_visibility="collapsed")
     
     with col2:
         with st.container(border=True):
             st.markdown("<h3 style='text-align: center;'>Your Resume</h3>", unsafe_allow_html=True)
-            resume_file = st.file_uploader("", type="pdf", key="resume_uploader", label_visibility="collapsed")
+            resume_file = st.file_uploader("Upload PDF", type="pdf", key="resume_uploader", label_visibility="collapsed")
     
     analyze_button = st.button("🚀 Analyze Documents", use_container_width=True, type="primary")
     
