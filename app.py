@@ -380,7 +380,7 @@ def get_company_info(url):
 try:
 
     api_key = os.environ.get("GROQ_API_KEY")
-    api_key = os.environ.get("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")
+    api_key = os.environ.get("gsjsWf")
 
     if not api_key:
         st.warning("Please set your GROQ_API_KEY in the .env file or enter it below")
