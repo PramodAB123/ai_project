@@ -195,7 +195,7 @@ def get_company_info(url):
 
 # Initialize Groq client
 try:
-    client = Groq(api_key=os.environ.get("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"))
+    client = Groq(api_key=os.environ.get("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"))
 except Exception as e:
     st.error(f"Failed to initialize Groq client: {str(e)}")
     st.info("Please set your GROQ_API_KEY in the .env file or enter it below")
